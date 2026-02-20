@@ -5,6 +5,7 @@ namespace wmbus_meter {
 static const char *TAG = "wmbus_meter.text_sensor";
 
 void TextSensor::handle_update() {
+  ESP_LOGD(TAG, "%s: field_name '%s'", __FUNCTION__, this->field_name);
   auto val = this->parent_->get_string_field(this->field_name);
   if (val.has_value())
     this->publish_state(*val);

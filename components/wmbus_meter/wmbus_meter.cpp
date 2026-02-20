@@ -105,12 +105,13 @@ optional<float> Meter::get_numeric_field(std::string field_name) {
 
   std::string name;
   Unit unit;
-  extractUnit(field_name, &name, &unit);
+  if (extractUnit(field_name, &name, &unit)) {
+    auto value = this->meter->getNumericValue(name, unit);
 
-  auto value = this->meter->getNumericValue(name, unit);
-
-  if (!std::isnan(value))
-    return value;
+    if (!std::isnan(value))
+      return value;
+  } else
+    ESP_LOGW(TAG, "Cannot extra a valid unit from field name \"%s\"", field_name.c_str());
 
   return {};
 }
